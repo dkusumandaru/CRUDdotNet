@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DemoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="product">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name_product" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="price" Type="Int32" Nullable="false" />
+    <Property Name="category" Type="Int32" Nullable="false" />
+    <Property Name="is_delete" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="product_category" Relationship="Self.FK__product__categor__403A8C7D" FromRole="product" ToRole="product_category" />
+  </EntityType>
+  <EntityType Name="product_category">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="is_delete" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="products" Relationship="Self.FK__product__categor__403A8C7D" FromRole="product_category" ToRole="product" />
+  </EntityType>
+  <Association Name="FK__product__categor__403A8C7D">
+    <End Role="product_category" Type="Self.product_category" Multiplicity="1" />
+    <End Role="product" Type="Self.product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="product_category">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="product">
+        <PropertyRef Name="category" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DemoEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="products" EntityType="Self.product" />
+    <EntitySet Name="product_category" EntityType="Self.product_category" />
+    <AssociationSet Name="FK__product__categor__403A8C7D" Association="Self.FK__product__categor__403A8C7D">
+      <End Role="product_category" EntitySet="product_category" />
+      <End Role="product" EntitySet="products" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
